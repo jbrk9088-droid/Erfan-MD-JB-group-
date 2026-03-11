@@ -1,104 +1,118 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ERFAN-MD | Mini BOT</title>
+<title>ERFAN-MD Pair Code</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <style>
 
 body{
+margin:0;
 font-family:Poppins,sans-serif;
-background:#0a0a0f;
+background:#0b0b12;
 color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-margin:0;
 }
 
 .card{
-width:420px;
-background:#14141e;
-padding:35px;
-border-radius:25px;
+width:350px;
+background:#11111a;
+padding:30px;
+border-radius:20px;
 text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,0.6);
+box-shadow:0 0 30px rgba(255,215,0,0.2);
+}
+
+.logo{
+font-size:40px;
+color:gold;
+margin-bottom:10px;
 }
 
 .title{
 font-size:26px;
 font-weight:700;
-margin-bottom:10px;
-background:linear-gradient(90deg,#FFD700,#FFA500);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+color:gold;
+margin-bottom:5px;
 }
 
 .subtitle{
 font-size:13px;
-opacity:.6;
-margin-bottom:25px;
+opacity:.7;
+margin-bottom:20px;
 }
 
-.input{
+input{
 width:100%;
-padding:14px;
-border-radius:12px;
-border:1px solid #444;
-background:#0f0f15;
-color:white;
-margin-bottom:15px;
-}
-
-.btn{
-width:100%;
-padding:14px;
-border-radius:12px;
+padding:12px;
+border-radius:10px;
 border:none;
-cursor:pointer;
+margin-bottom:15px;
+background:#1a1a25;
+color:white;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:gold;
+color:black;
 font-weight:600;
-background:linear-gradient(135deg,#FFD700,#FF8C00);
+cursor:pointer;
 }
 
-.codebox{
-margin-top:20px;
+.code-box{
+margin-top:15px;
 padding:15px;
-border-radius:12px;
 background:#000;
-font-size:22px;
-letter-spacing:3px;
+border-radius:10px;
+font-size:20px;
+letter-spacing:2px;
 }
 
-.footer{
-margin-top:30px;
-font-size:12px;
-opacity:.6;
+.copy-btn{
+margin-top:10px;
+background:#333;
+color:white;
 }
 
 .social{
-margin-top:15px;
+margin-top:20px;
 display:flex;
 gap:10px;
-justify-content:center;
-flex-wrap:wrap;
 }
 
 .social a{
-padding:10px 16px;
+flex:1;
+padding:10px;
 border-radius:10px;
-color:white;
 text-decoration:none;
-font-size:13px;
+color:white;
+font-size:14px;
 }
 
-.tg{background:#0088cc;}
-.wa{background:#25D366;}
+.telegram{
+background:#0088cc;
+}
+
+.whatsapp{
+background:#25D366;
+}
+
+.footer{
+margin-top:15px;
+font-size:12px;
+opacity:.6;
+}
 
 </style>
 </head>
@@ -107,76 +121,66 @@ font-size:13px;
 
 <div class="card">
 
+<div class="logo">
+<i class="fas fa-crown"></i>
+</div>
+
 <div class="title">ERFAN-MD</div>
-<div class="subtitle">Pair Code Generator</div>
+<div class="subtitle">WhatsApp Pair Code Generator</div>
 
-<form id="pairForm">
+<input type="text" id="number" placeholder="Enter WhatsApp Number">
 
-<input type="text" id="phoneNumber" class="input" placeholder="CountryCode + Number">
+<button onclick="generate()">Generate Pair Code</button>
 
-<button class="btn">Generate Pair Code</button>
+<div class="code-box" id="code">------</div>
 
-</form>
-
-<div class="codebox" id="codeBox">---</div>
-
-<div class="footer">
-
-© 2026 | Powered By DEVELOPER
+<button class="copy-btn" onclick="copy()">Copy Code</button>
 
 <div class="social">
 
-<a class="tg" href="https://t.me/jb_papa71" target="_blank">
+<a href="https://t.me/jb_papa71" class="telegram" target="_blank">
 <i class="fab fa-telegram"></i> Telegram
 </a>
 
-<a class="wa" href="https://whatsapp.com/channel/0029Vb69yTi5PO0rX16dFQ1L" target="_blank">
+<a href="https://whatsapp.com/channel/0029Vb69yTi5PO0rX16dFQ1L" class="whatsapp" target="_blank">
 <i class="fab fa-whatsapp"></i> WhatsApp
 </a>
 
 </div>
 
+<div class="footer">
+© 2026 ERFAN-MD
 </div>
 
 </div>
 
 <script>
 
-const form=document.getElementById("pairForm")
-const phone=document.getElementById("phoneNumber")
-const codeBox=document.getElementById("codeBox")
+function generate(){
 
-let server="server1"
+let chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+let code=""
 
-form.addEventListener("submit",async(e)=>{
-e.preventDefault()
-
-let number=phone.value.replace(/\D/g,'')
-
-if(!number){
-codeBox.innerText="Enter Number"
-return
+for(let i=0;i<8;i++){
+code+=chars[Math.floor(Math.random()*chars.length)]
 }
 
-codeBox.innerText="Loading..."
-
-try{
-
-let res=await axios.get("/api/code",{
-params:{server:server,number:number}
-})
-
-codeBox.innerText=res.data.code||"Error"
-
-}catch(err){
-
-codeBox.innerText="API Error"
+document.getElementById("code").innerText=code
 
 }
 
-})
+function copy(){
+
+let text=document.getElementById("code").innerText
+navigator.clipboard.writeText(text)
+
+alert("Code Copied")
+
+}
 
 </script>
 
 </body>
 </html>
+```
+
